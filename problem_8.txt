@@ -1,0 +1,125 @@
+Design a class hierarchy for employees, including a base class "Employee" and
+multiple levels of subclasses, such as "Manager""Developer" and "Intern." Each
+subclass should inherit attributes from the base class and add specific
+attributes and methods. Create instances of these subclasses to represent
+different rolcs within a company. In addition to the basc class "Employce" and
+subclasses like "Manager" and "Developer" introduce another level of
+subclasses (e.g., "SeniorManager" "JuniorDeveloper"). Each subclass should
+override methods inherited from its parent classes to provide specialized
+behavior.
+
+
+class Employee {
+    private String name;
+    private int employeeId;
+    private double salary;
+
+    public Employee(String name, int employeeId, double salary) {
+        this.name = name;
+        this.employeeId = employeeId;
+        this.salary = salary;
+    }
+
+    public void work() {
+        System.out.println("Employee is working.");
+    }
+
+    public void displayInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("Employee ID: " + employeeId);
+        System.out.println("Salary: " + salary);
+    }
+}
+
+class Manager extends Employee {
+    private String department;
+
+    public Manager(String name, int employeeId, double salary, String department) {
+        super(name, employeeId, salary);
+        this.department = department;
+    }
+
+    public void manage() {
+        System.out.println("Manager is managing the " + department + " department.");
+    }
+}
+
+class Developer extends Employee {
+    private String programmingLanguage;
+
+    public Developer(String name, int employeeId, double salary, String programmingLanguage) {
+        super(name, employeeId, salary);
+        this.programmingLanguage = programmingLanguage;
+    }
+
+    public void code() {
+        System.out.println("Developer is coding in " + programmingLanguage + ".");
+    }
+}
+
+class Intern extends Employee {
+    private String mentor;
+
+    public Intern(String name, int employeeId, double salary, String mentor) {
+        super(name, employeeId, salary);
+        this.mentor = mentor;
+    }
+
+    public void learn() {
+        System.out.println("Intern is learning from " + mentor + ".");
+    }
+}
+
+class SeniorManager extends Manager {
+    public SeniorManager(String name, int employeeId, double salary, String department) {
+        super(name, employeeId, salary, department);
+    }
+
+    public void report() {
+        System.out.println("Senior Manager is preparing a report.");
+    }
+}
+
+class JuniorDeveloper extends Developer {
+    public JuniorDeveloper(String name, int employeeId, double salary, String programmingLanguage) {
+        super(name, employeeId, salary, programmingLanguage);
+    }
+
+    public void debug() {
+        System.out.println("Junior Developer is debugging code.");
+    }
+}
+
+public class EmployeeHierarchy {
+    public static void main(String[] args) {
+        Employee emp1 = new Manager("John Doe", 101, 60000.0, "IT");
+        Employee emp2 = new Developer("Alice Smith", 102, 55000.0, "Java");
+        Employee emp3 = new Intern("Bob Johnson", 103, 15000.0, "Senior Developer");
+        Employee emp4 = new SeniorManager("Eva Williams", 104, 80000.0, "Marketing");
+        Employee emp5 = new JuniorDeveloper("Chris Brown", 105, 50000.0, "Python");
+
+        emp1.displayInfo();
+        emp1.work();
+        ((Manager) emp1).manage();
+        System.out.println();
+
+        emp2.displayInfo();
+        emp2.work();
+        ((Developer) emp2).code();
+        System.out.println();
+
+        emp3.displayInfo();
+        emp3.work();
+        ((Intern) emp3).learn();
+        System.out.println();
+
+        emp4.displayInfo();
+        emp4.work();
+        ((SeniorManager) emp4).report();
+        System.out.println();
+
+        emp5.displayInfo();
+        emp5.work();
+        ((JuniorDeveloper) emp5).debug();
+    }
+}
