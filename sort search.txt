@@ -1,0 +1,74 @@
+import java.util.Scanner;
+
+class BubbleSort {
+    public static void main(String[] args) {
+        int i, j, temp;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the limit of array: ");
+        int n = scanner.nextInt();
+        System.out.println("Enter the elements of array: ");
+        int a[] = new int[n];
+        for (i = 0; i < n; i++) {
+            a[i] = scanner.nextInt();
+        }
+
+        // Perform Bubble Sort
+        for (i = 0; i < n - 1; i++) {
+            for (j = 0; j < n - i - 1; j++) {
+                if (a[j] > a[j + 1]) {
+                    temp = a[j];
+                    a[j] = a[j + 1];
+                    a[j + 1] = temp;
+                }
+            }
+        }
+
+        // Call the display method to print the sorted array
+        display(a);
+    }
+
+    public static void display(int a[]) {
+        System.out.println("The bubbled array is:");
+        for (int i = 0; i < a.length; i++) {
+            System.out.print(a[i] + " ");
+        }
+        System.out.println();
+    }
+}
+
+
+
+
+
+
+
+
+import java.util.Scanner;
+
+class LinearSearch {
+    public static void main(String[] args) {
+        int i, found = 0;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the limit of array: ");
+        int n = scanner.nextInt();
+        System.out.println("Enter the elements of array: ");
+        int a[] = new int[n];
+        for (i = 0; i < n; i++) {
+            a[i] = scanner.nextInt();
+        }
+        System.out.println("Enter element to be searched:");
+        int x = scanner.nextInt();
+        
+        for (i = 0; i < n; i++) {
+            if (x == a[i]) {
+                found = 1;
+                System.out.println("Element is found");
+                break; // If the element is found, exit the loop.
+            }
+        }
+        
+        if (found == 0) {
+            System.out.println("Not found");
+        }
+    }
+}
