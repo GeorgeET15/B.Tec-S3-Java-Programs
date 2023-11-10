@@ -1,0 +1,165 @@
+11.  Write a Java program to implement an ATM for State Bank of India. The customers of the bank can withdraw, deposit money, and transfer money through the ATM. Customers can also view the available balance. The account balance of all customers are stored in a file having a file name same as their account number.
+
+Throw an exception during a withdrawal operation if sufficient balance is not available and use a catch statement to inform the customer about the same.  Use the finally block to ensure that the available balance is displayed and that the file that stores the account balance of the customer is closed after every transaction even if an exception occurs or not during the transaction. Handle all the possible exceptions related to file.
+
+
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+class BankAccount {
+    private String accountNumber;
+    private double balance;
+
+    public BankAccount(String accountNumber, double balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+
+    public void withdraw(double amount) throws InsufficientBalanceException {
+        if (amount > balance) {
+            throw new InsufficientBalanceException("Insufficient balance");
+        }
+        balance -= amount;
+    }
+
+    public void transfer(BankAccount toAccount, double amount) throws InsufficientBalanceException {
+        withdraw(amount);
+        toAccount.deposit(amount);
+    }
+}
+
+class InsufficientBalanceException extends Exception {
+    public InsufficientBalanceException(String message) {
+        super(message);
+    }
+}
+
+public class ATM {
+    public static void main(String[] args) {
+        // Sample account numbers and balances
+        String accountNumber1 = "123456";
+        String accountNumber2 = "789012";
+
+        try {
+            performTransaction(accountNumber1, 100.0);
+            performTransaction(accountNumber2, 50.0);
+        } catch (InsufficientBalanceException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error reading/writing file: " + e.getMessage());
+        } finally {
+            System.out.println("Transaction complete.");
+        }
+    }
+
+    private static void performTransaction(String accountNumber, double amount)
+            throws InsufficientBalanceException, IOException {
+        BankAccount account = loadAccount(accountNumber);
+        System.out.println("Account balance before transaction: " + account.getBalance());
+
+        try {
+            // Example: Withdraw operation
+            account.withdraw(amount);
+
+            // Perform other operations like deposit, transfer, etc., as needed
+            // account.deposit(amount);
+            // account.transfer(anotherAccount, amount);
+
+            // Save the updated balance to the file
+            saveAccount(account);
+        } finally {
+            System.out.println("Account balance after transaction: " + account.getBalance());
+        }
+    }
+
+    private static BankAccount loadAccount(String accountNumber) throws IOException {
+        String fileName = accountNumber + ".txt";
+        File file = new File(fileName);
+
+        if (!file.exists()) {
+            // Create a new account if the file doesn't exist
+            BankAccount newAccount = new BankAccount(accountNumber, 0.0);
+            saveAccount(newAccount);
+            return newAccount;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            double balance = Double.parseDouble(reader.readLine());
+            return new BankAccount(accountNumber, balance);
+        }
+    }
+
+    private static void saveAccount(BankAccount account) throws IOException {
+        String fileName = account.getAccountNumber() + ".txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write(Double.toString(account.getBalance()));
+        }
+    }
+}
+
+
+
+
+
+ Write a Java program to demonstrate the use of garbage collectors.
+
+Hint :
+ public class GarbageCollection{
+    public void finalize()
+    {
+        System.out.println ("Garbage Collection performed by JVM");
+    }
+    public static void main (String args[])
+    {
+        GarbageCollection s1 = new GarbageCollection();
+        GarbageCollection s2 = new GarbageCollection();
+        s1 = null;
+        s2 = null;
+   System.gc();
+    System.runFinalization();
+    }
+}
+gc() method of System class runs the garbage collector
+
+ System.runFinalization();  runs the finalization functions of any object whose finalization functions may be pending. Calling this method instructs the Java Virtual Machine (JVM) to run the finalization process for the required objects.
+
+
+
+
+
+
+
+
+public class GarbageCollection {
+    public void finalize() {
+        System.out.println("Garbage Collection performed by JVM");
+    }
+
+    public static void main(String args[]) {
+        GarbageCollection s1 = new GarbageCollection();
+        GarbageCollection s2 = new GarbageCollection();
+
+        // Assigning null to reference variables
+        s1 = null;
+        s2 = null;
+
+        // Requesting JVM to run garbage collector
+        System.gc();
+
+        // Requesting JVM to run finalization process
+        System.runFinalization();
+    }
+}
